@@ -1,50 +1,69 @@
 import 'package:flutter/material.dart';
 void main() {
-  runApp(
-      MaterialApp(
-        title: "Ayush hospital app",
-        home: PhnNumber(),
-      )
-  );
+  runApp( MaterialApp(
+    debugShowCheckedModeBanner: false,
+    theme:  ThemeData(
+      primaryColor: const Color(0xFF02BB9F),
+      primaryColorDark: const Color(0xFF167F67),
+      accentColor: const Color(0xFF167F67),
+    ),
+    home:  DropdownScreen(),
+  ));
 }
-class PhnNumber extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return _PhnNumberState();
-  }
+class Item {
+  const Item(this.name,this.icon);
+  final String name;
+  final Icon icon;
 }
-
-class _PhnNumberState extends State <PhnNumber> {
-  String number="";
+class DropdownScreen extends StatefulWidget {
+  State createState() =>  DropdownScreenState();
+}
+class DropdownScreenState extends State<DropdownScreen> {
+  Item selectedUser;
+  List<Item> users = <Item>[
+    const Item('Cardiology',Icon(Icons.airline_seat_flat,color:  const Color(0xFF167F67),)),
+    const Item('Intensive Care Unit',Icon(Icons.airline_seat_flat,color:  const Color(0xFF167F67),)),
+    const Item('Maternity Ward',Icon(Icons.airline_seat_flat,color:  const Color(0xFF167F67),)),
+    const Item('Gyanecology',Icon(Icons.airline_seat_flat,color:  const Color(0xFF167F67),)),
+  ];
   @override
   Widget build(BuildContext context) {
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("ONLINE APPOINTMENT APP"),
-      ),
-      body: Container(
-        margin: EdgeInsets.all(20.0),
-        child: Column(
-          children: <Widget>[
-            TextField(
-              onSubmitted: (String userInput) {
-                number = userInput;
-              },
-            ),
-            Padding(
-                padding: EdgeInsets.all(30.0),
-                child:
-                Text(
-                  "Enter your Phone Number",
-                  style: TextStyle(fontSize: 20.0),
-                ))
-          ],
+    return  MaterialApp(
+      home:  Scaffold(
+        appBar: AppBar(
+          backgroundColor: const Color(0xFF167F67),
+          title: Text(
+            'Choose Your Department',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+        body:  Center(
+          child:  DropdownButton<Item>(
+            hint:  Text("Select item"),
+            value: selectedUser,
+            onChanged: (Item Value) {
+              setState(() {
+                selectedUser = Value;
+              });
+            },
+            items: users.map((Item user) {
+              return  DropdownMenuItem<Item>(
+                value: user,
+                child: Row(
+                  children: <Widget>[
+                    user.icon,
+                    SizedBox(width: 10,),
+                    Text(
+                      user.name,
+                      style:  TextStyle(color: Colors.black),
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
+          ),
         ),
       ),
     );
-    // TODO: implement build
-    return null;
   }
 }
